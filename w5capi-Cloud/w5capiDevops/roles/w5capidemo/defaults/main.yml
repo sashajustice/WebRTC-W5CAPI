@@ -1,0 +1,3 @@
+app_path: '/opt/WebRTC-W5CAPI/w5capi-Demo'
+
+app_server_path: '/opt/WebRTC-W5CAPI/w5capi-Demo/server.js'

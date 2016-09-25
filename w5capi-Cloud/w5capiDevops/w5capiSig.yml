@@ -1,0 +1,11 @@
+---
+
+- name: W5capiSig Setup 
+  hosts: w5capi
+  remote_user: root
+  gather_facts: False
+  
+  roles:
+
+     - { role: w5capisig }
+    

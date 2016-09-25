@@ -1,0 +1,11 @@
+---
+
+- name: Mongo Setup 
+  hosts: w5capi
+  remote_user: root
+  gather_facts: False
+  
+  roles:
+
+     - { role: mongo }
+    

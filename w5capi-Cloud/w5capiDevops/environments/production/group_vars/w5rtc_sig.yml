@@ -1,0 +1,100 @@
+---
+service_name: w5sig
+
+region: us-east-1
+instance_type: t2.micro
+vpc_name: w5rtc-dev
+image: ami-61bbf104 # Centos
+os_user: root
+ins_os: centos
+
+subnet_name: Private-1
+
+security_gp_name: w5sig
+service_port:
+  - 22
+  - 80
+  - 8888
+  - 1936
+  - 5666
+security_rules:
+# SSH Port
+  - proto: tcp
+    from_port: 22
+    to_port: 22
+    group_name: MGMT
+# W5sig Port
+  - proto: tcp
+    from_port: 8881
+    to_port: 8881
+    group_name: HAProxy
+
+
+CountIns: 2
+InsNat: no
+key_name: tp-usva
+tag_name: usvaSignaling
+tag_environment: production
+public_ip: no
+
+#  Variables for w5call role
+
+#host_name=tag_Name_${Instance_Tag_Name}
+
+# ## Deployment Variables
+
+# # Path where the code must be deployed to
+# ansistrano_deploy_to: "/opt/my-app"
+
+# # Folder name for the releases
+ansistrano_version_dir: "releases"
+
+# # Softlink name for the current release
+ansistrano_current_dir: "current"
+
+# # Number of releases to keep in your hosts, if 0, unlimited releases will be kept
+ansistrano_keep_releases: 5
+
+# # Deployment strategies variables
+ansistrano_deploy_via: "git"
+
+# ## GIT pull strategy
+# ansistrano_git_repo: git@github.com:W5RTC/Website.git
+ansistrano_git_branch: master
+#ansistrano_release_version: `date -u +%Y%m%d%H%M%SZ`
+
+# # path containing all releases
+releases_path: "{{ ansistrano_deploy_to }}/releases"
+
+# # path to current symlink, which should be replaced
+current_path: "{{ ansistrano_deploy_to }}/current"
+
+## path containg shared config files
+shared_path: "{{ ansistrano_deploy_to }}/shared"
+
+deploy:
+  w5sig:
+    ansistrano_deploy_to: "/opt/w5sig"
+    ansistrano_git_repo: git@github.com:W5RTC/W5capi.git
+
+
+Sig_appPath: "{{current_path}}/w5capi-Cloud/w5capiSIG"
+SigLogFile: "/var/log/w5sig.log"
+SighPidFile: "/var/run/w5sig.pid"
+SigjsFile: "w5_sigServer.js"
+SigAppName: "w5sig"
+
+hostDomain: "w5rtc.com"
+host_name: "website"
+
+w5sig_shared_paths:
+  - node_modules
+
+# w5call Application Variables
+
+redis_host: 172.32.3.8
+redis_port: 6379
+mongo_host: 172.32.3.8
+mongo_port: 27017
+
+

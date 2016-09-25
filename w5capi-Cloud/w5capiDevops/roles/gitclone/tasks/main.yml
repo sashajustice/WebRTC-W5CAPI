@@ -1,0 +1,15 @@
+---
+
+- name: Update cache
+  apt: name=curl 
+  
+- name: install git
+  apt: name=git state=present
+
+- name: Clone repo from github
+  sudo: yes
+  git: repo=https://github.com/murugan-pandian/WebRTC-W5CAPI.git 
+       dest={{ repo_desc }} 
+       update=yes
+       force=yes
+       

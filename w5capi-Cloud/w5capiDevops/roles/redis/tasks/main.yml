@@ -1,0 +1,10 @@
+---
+
+    - name: UPDATE
+      apt: update_cache=yes
+
+    - name: Ensure redis is installed.
+      apt: name=redis-server state=installed    
+      
+    - name: Ensure redis is restarted and enable to start
+      service: name=redis-server state=started enabled=yes

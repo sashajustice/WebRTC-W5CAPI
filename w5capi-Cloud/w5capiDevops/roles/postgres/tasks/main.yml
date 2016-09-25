@@ -1,0 +1,52 @@
+---
+    - name: UPDATE
+      apt: update_cache=yes
+
+    - name: Install dependencies for the Ansible module
+      apt: name={{ item }}
+      with_items:
+         - python-psycopg2
+
+    - name: Adding APT repository key
+      apt_key:
+        id: ACCC4CF8
+        url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+    - name: Add PostgreSQL official APT repository
+      apt_repository:
+        repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main"
+
+    - name: Install PostgreSQL
+      apt: name=postgresql-{{ postgresql_version }} state=present
+
+    - name: Configure PostgreSQL
+      template:
+       src: postgresql.conf.j2
+       dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+
+    - name: Configure PostgreSQL (authentication)
+      template:
+       src: pg_hba.conf.j2
+       dest: /etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+       
+    - name: service psql start
+      service: name=postgresql state=reloaded enabled=yes
+
+    - name: service psql start
+      service: name=postgresql state=restarted enabled=yes
+
+    - name: CREATING DATABASE FOR TELECMI
+      sudo_user: postgres
+      postgresql_db: name=telecmi state=present
+
+    - name: CREATING USERNAME AND PASSWORD FOR TELECMI
+      sudo_user: postgres
+      postgresql_user: db=telecmi name=telecmi password=telecmi state=present priv=ALL
+
+    - name: CREATING DATABASE FOR Freeswitch
+      sudo_user: postgres
+      postgresql_db: name=Freeswitch state=present
+
+    - name: CREATING USERNAME AND PASSWORD FOR Freeswitch
+      sudo_user: postgres
+      postgresql_user: db=Freeswitch name=Freeswitch password=Freeswitch state=present priv=ALL

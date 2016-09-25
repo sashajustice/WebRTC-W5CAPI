@@ -1,0 +1,8 @@
+{
+  "name": "CDN",
+  "description": "CDN server for w5capi",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "~4.13.4"
+  }
+}

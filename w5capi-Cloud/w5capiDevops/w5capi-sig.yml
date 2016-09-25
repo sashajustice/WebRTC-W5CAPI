@@ -1,0 +1,14 @@
+---
+- hosts: "{{ host_name }}"
+  remote_user: "{{ os_user }}"
+  sudo: yes
+  gather_facts: yes
+  vars_files:
+    - environments/production/group_vars/w5rtc_sig.yml
+
+  roles:
+    - { role: default }
+    - { role: nodejs }
+    - { role: deploy, ansistrano_deploy_to: "{{deploy.w5sig.ansistrano_deploy_to}}", ansistrano_git_repo: "{{deploy.w5sig.ansistrano_git_repo}}" }
+    - { role: w5sig, tags: w5sig,  ansistrano_deploy_to: "{{deploy.w5sig.ansistrano_deploy_to}}" }
+

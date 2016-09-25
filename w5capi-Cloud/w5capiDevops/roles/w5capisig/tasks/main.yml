@@ -1,0 +1,24 @@
+---
+
+- name: Delete exists node_modules
+  file: dest={{ app_path }}/node_modules state=absent 
+   
+- name: install npm packages
+  npm: path={{ app_path }} 
+  ignore_errors: yes
+  
+- name: Copy Confid file
+  template: src=config.yml.j2 desc=/opt/WebRTC-W5CAPI/w5capi-Cloud/w5capiSIG/configure.js
+
+- name: "Check list of Node.js apps running."
+  command: forever list
+  register: forever_list
+  changed_when: false
+
+- name: "Start Node app."
+  command: forever start {{ app_server_path }}
+  when: "forever_list.stdout.find('{{ app_server_path }}') == -1"
+  
+- name: "Restart Node app."
+  command: forever start {{ app_server_path }}
+  when: "forever_list.stdout.find('{{ app_server_path }}') != -1"

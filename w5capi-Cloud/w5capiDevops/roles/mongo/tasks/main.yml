@@ -1,0 +1,21 @@
+---
+   - name: Import The Public Key
+     shell: apt-key adv --keyserver hkp://{{mongo_key_server}} --recv {{mongo_id}}
+
+   - name: Echo MongoDB
+     shell: echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/{{mongo_version}} main" > /etc/apt/sources.list.d/mongodb-org-{{ mongo_version }}.list
+   
+   - name: Update
+     apt: update_cache=yes
+
+   - name: Install The MongoDB
+     apt: name=mongodb-org state=present
+
+   - name: Copy Mongo-org Configuration File
+     template:
+       src: mongod.conf.j2
+       dest: /etc/mongod.conf
+     notify: restart mongod
+
+   - name: Ensure MongoDB Is Restarted And Enabled To Start Boot
+     service: name=mongod state=started enabled=yes

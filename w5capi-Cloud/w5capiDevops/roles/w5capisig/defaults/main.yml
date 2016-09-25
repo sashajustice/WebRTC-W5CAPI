@@ -1,0 +1,3 @@
+app_path: '/opt/WebRTC-W5CAPI/w5capi-Cloud/w5capiSIG'
+
+app_server_path: '/opt/WebRTC-W5CAPI/w5capi-Cloud/w5capiSIG/w5_sigServer.js'

@@ -1,0 +1,28 @@
+---
+
+- name: update cache
+  apt: update_cache=yes
+
+- name: DEPENDENCIES
+  apt: name={{ item }}
+  with_items:
+    - build-essential
+    - openssl
+    - libssl-dev
+    - pkg-config 
+    - curl
+
+- name: DOWNLOADING UPDATED VERSION OF NODEJS
+  shell: curl -sL https://deb.nodesource.com/setup_{{ nodejs_version }} 
+
+- name: install nodeja
+  apt: name=nodejs force=yes
+
+- name: install node legacy
+  apt: name=nodejs-legacy state=present
+  
+- name: install npm
+  apt: name=npm state=present
+    
+- name: Install forever npm
+  npm: name=forever global=yes

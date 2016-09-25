@@ -1,0 +1,4 @@
+---
+repo_desc: '/opt/WebRTC-W5CAPI'
+sudo_user: 'root'
+branch: 'master'

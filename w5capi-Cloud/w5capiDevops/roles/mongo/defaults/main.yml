@@ -1,0 +1,5 @@
+---
+
+  mongo_key_server: keyserver.ubuntu.com:80
+  mongo_id: EA312927
+  mongo_version: 3.2
